@@ -7,3 +7,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+actix-web = "2"
+actix-rt = "1"
+juniper = "0.14"
+dotenv = "*"
+env_logger = "*"
+log = "*"
+serde = { version = "*", features = ["derive"]}
+serde_json = "*"
