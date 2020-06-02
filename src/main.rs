@@ -4,8 +4,6 @@ use dotenv::{dotenv, from_filename};
 use juniper::http::graphiql::graphiql_source;
 use juniper::http::GraphQLRequest;
 use std::sync::Arc;
-
-
 pub mod graphql;
 
 impl Photo {
@@ -19,7 +17,7 @@ impl Photo {
 }
 
 /// actixからGraphQLにアクセスするためのハンドラメソッド
-pub async fn graphql(
+async fn graphql(
     st: web::Data<Arc<Schema>>,
     data: web::Json<GraphQLRequest>,
 ) -> Result<HttpResponse, Error> {
@@ -67,18 +65,16 @@ pub async fn graphql(
 }
 
 /// actixからGraphiQLにアクセスするためのハンドラメソッド
-pub async fn graphiql() -> HttpResponse {
-    let html = graphiql_source("http://127.0.0.1:3000/graphql");
+async fn graphiql() -> HttpResponse {
+    let html = graphiql_source("http://127.0.0.1:8080/graphql");
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html)
 }
 
-pub async fn hello_world() -> impl Responder {
+async fn hello_world() -> impl Responder {
     "Hello World!"
 }
-
-
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -103,6 +99,6 @@ async fn main() -> std::io::Result<()> {
             .route("/graphql", web::post().to(graphql)) // 追加
     });
 
-    server = server.bind("127.0.0.1:3000").unwrap();
+    server = server.bind("127.0.0.1:8080").unwrap();
     server.run().await
 }
